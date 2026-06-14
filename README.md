@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -71,3 +72,17 @@ export default defineConfig([
   },
 ])
 ```
+=======
+# Lost & Found Portal
+
+## Problem Statement
+Students often lose personal belongings on campus and lack a centralized reporting system.
+
+## Objective
+To create a platform where students can report and find lost items.
+
+## Team Members
+- Teja
+- Lathika
+- Harika
+>>>>>>> f56001933f0fa8a00cfc32bdd91318effe69446d
