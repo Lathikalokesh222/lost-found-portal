@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, UserPlus } from 'lucide-react';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
-import { useAuth } from '../contexts/AuthContext';
+import { signUp } from '../lib/auth';
 import { useToast } from '../components/ui/Toast';
 import './SignupPage.css';
 
 export function SignupPage() {
-  const { signUp } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
 
@@ -50,12 +49,14 @@ export function SignupPage() {
 
     setLoading(true);
     try {
-      await signUp(email, password, fullName);
-      addToast('Registration successful! Please sign in.', 'success');
+      const { error } = await signUp(email, password, fullName);
+      if (error) throw error;
+      addToast('Account created successfully. Please login to continue.', 'success');
       navigate('/login');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      addToast(err.message || 'Failed to sign up.', 'error');
+      const message = err instanceof Error ? err.message : 'Failed to sign up.';
+      addToast(message, 'error');
     } finally {
       setLoading(false);
     }
@@ -129,7 +130,7 @@ export function SignupPage() {
               loading={loading}
               icon={<UserPlus size={18} />}
             >
-              Sign Up
+              {loading ? 'Creating Account...' : 'Sign Up'}
             </Button>
           </form>
         </div>
