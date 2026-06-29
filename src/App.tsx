@@ -6,6 +6,7 @@ import { PublicRoute } from './components/auth/PublicRoute';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ReportLostPage } from './pages/ReportLostPage';
 import { ReportFoundPage } from './pages/ReportFoundPage';
 import { SearchPage } from './pages/SearchPage';
@@ -33,6 +34,14 @@ function App() {
             element={
               <PublicRoute>
                 <SignupPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPasswordPage />
               </PublicRoute>
             }
           />

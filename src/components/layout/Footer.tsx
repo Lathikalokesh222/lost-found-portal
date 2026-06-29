@@ -6,7 +6,7 @@ import './Footer.css';
 export function Footer() {
   const location = useLocation();
 
-  if (location.pathname === '/login' || location.pathname === '/signup') {
+  if (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgot-password') {
     return null;
   }
 
