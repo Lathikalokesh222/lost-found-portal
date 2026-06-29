@@ -9,7 +9,7 @@ import './Navbar.css';
 export function Navbar() {
   const location = useLocation();
 
-  if (location.pathname === '/login' || location.pathname === '/signup') {
+  if (location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/forgot-password') {
     return null;
   }
 

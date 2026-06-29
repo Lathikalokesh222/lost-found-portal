@@ -1,76 +1,274 @@
-.signup-page {
+/* ============================================
+   Findly — Premium SignUp Page Styles
+   ============================================ */
+
+.signup-page-premium {
+  display: grid;
+  grid-template-columns: 42fr 58fr;
+  min-height: 100vh;
+  background-color: #F8FAFC;
+  overflow: hidden;
+  font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+}
+
+/* --- Left Side (Sign-Up Form Section - 42% width) --- */
+.signup-left-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - var(--navbar-height));
-  position: relative;
+  padding: 40px;
+  background-color: #F8FAFC;
+  z-index: 10;
 }
 
-.signup-page::before {
-  content: '';
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  height: 450px;
-  background: var(--accent-secondary);
-  border-radius: 50%;
-  filter: blur(140px);
-  opacity: 0.06;
-  pointer-events: none;
-}
-
-.signup-page__card {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  box-shadow: var(--shadow-lg);
-}
-
-.signup-page__header {
-  text-align: center;
-}
-
-.signup-page__logo {
-  font-size: 2.25rem;
-  margin-bottom: 8px;
-}
-
-.signup-page__title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.signup-page__subtitle {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.signup-page__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.signup-page__form-options {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 4px;
-}
-
-.signup-page__link {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-}
-
-.signup-page__link:hover {
-  color: var(--accent-primary);
-}
-
-.signup-page__submit {
-  margin-top: 16px;
+.signup-form-card {
   width: 100%;
+  max-width: 520px;
+  background-color: #FFFFFF;
+  border-radius: 28px;
+  padding: 40px;
+  box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.08), 
+              0 0 2px 1px rgba(15, 23, 42, 0.01);
+  border: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.signup-form-card:hover {
+  box-shadow: 0 30px 60px -15px rgba(15, 23, 42, 0.12),
+              0 0 3px 1px rgba(15, 23, 42, 0.02);
+}
+
+/* Headings */
+.signup-welcome-title {
+  font-size: 2.125rem;
+  font-weight: 850;
+  color: #0F172A;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.signup-welcome-subtitle {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #64748B;
+  font-weight: 500;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+/* Dividers */
+.signup-divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 0;
+  width: 100%;
+}
+
+.signup-divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #E2E8F0;
+}
+
+.signup-divider-text {
+  padding: 0 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* OAuth grid */
+.signup-oauth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* Bottom Sign In linkage */
+.signup-card-footer {
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.signup-signin-link {
+  color: #2563EB;
+  font-weight: 700;
+  margin-left: 6px;
+  transition: color 0.2s ease;
+}
+
+.signup-signin-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* --- Right Side (Illustration Section - 58% width) --- */
+.signup-right-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Float & Pulse & Bounce Animation Keyframes --- */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes pulse-shield {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 4px 15px rgba(37, 99, 235, 0.15));
+  }
+  50% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 12px 28px rgba(37, 99, 235, 0.35));
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 4.5s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 3s ease-in-out infinite;
+}
+
+.animate-pulse-gentle {
+  animation: pulse-gentle 7s ease-in-out infinite;
+}
+
+.animate-pulse-shield {
+  animation: pulse-shield 5s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 4s ease-in-out infinite;
+}
+
+.drop-shadow-3xl {
+  filter: drop-shadow(0 25px 35px rgba(15, 23, 42, 0.12));
+}
+
+/* ============================================
+   RESPONSIVENESS (Desktop First)
+   ============================================ */
+
+/* --- Tablet / Large iPad (Max 1024px) --- */
+@media (max-width: 1024px) {
+  .signup-page-premium {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    overflow-y: auto;
+  }
+
+  .signup-right-section {
+    min-height: 650px;
+    height: auto;
+    grid-row: 1; /* Moves illustration above the form */
+  }
+
+  .signup-left-section {
+    padding: 32px 16px 64px 16px;
+    grid-row: 2;
+  }
+
+  .signup-form-card {
+    max-width: 500px;
+    padding: 36px;
+    border-radius: 24px;
+  }
+}
+
+/* --- Mobile Device (Max 640px) --- */
+@media (max-width: 640px) {
+  .signup-right-section {
+    min-height: 480px;
+  }
+
+  /* Hide floating cards except the center shield on mobile */
+  .signup-right-section .absolute.inset-0.z-20 .animate-float-slow,
+  .signup-right-section .absolute.inset-0.z-20 .animate-float-medium,
+  .signup-right-section .absolute.inset-0.z-20 .animate-float-fast,
+  .signup-right-section .absolute.inset-0.z-20 .animate-bounce-gentle {
+    display: none !important;
+  }
+
+  /* Keep bottom features bar hidden too */
+  .signup-right-section .absolute.inset-0.z-25 {
+    display: none !important;
+  }
+
+  .signup-form-card {
+    max-width: 100%;
+    padding: 28px 20px;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  
+  .signup-left-section {
+    background-color: #FFFFFF;
+    padding: 16px 4px 48px 4px;
+  }
+
+  .signup-welcome-title {
+    font-size: 1.75rem;
+  }
 }
