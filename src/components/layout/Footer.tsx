@@ -6,6 +6,10 @@ import './Footer.css';
 export function Footer() {
   const location = useLocation();
 
+  if (location.pathname === '/login' || location.pathname === '/signup') {
+    return null;
+  }
+
   if (location.pathname === '/') {
     return <LandingFooter />;
   }

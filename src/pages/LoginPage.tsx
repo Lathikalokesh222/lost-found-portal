@@ -1,11 +1,20 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
 import { signIn } from '../lib/auth';
 import { useToast } from '../components/ui/Toast';
 import './LoginPage.css';
+
+// Custom Reusable Components
+import {
+  NavbarLogo,
+  HeroIllustration,
+  AuthCard,
+  InputField,
+  SocialLoginButton,
+  PrimaryButton,
+  FooterLinks,
+} from '../components/auth/LoginComponents';
 
 export function LoginPage() {
   const { addToast } = useToast();
@@ -13,6 +22,7 @@ export function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
@@ -49,89 +59,112 @@ export function LoginPage() {
     }
   };
 
-  return (
-    <div className="login-page page-container">
-      <div className="login-page__container container container--narrow animate-scale-in">
-        <div className="glass-card login-page__card">
-          <div className="login-page__header">
-            <div className="login-page__logo">📍</div>
-            <h1 className="login-page__title">Welcome Back</h1>
-            <p className="login-page__subtitle">Sign in to report and track items</p>
-          </div>
+  const handleOAuthLogin = (provider: 'Google' | 'Microsoft') => {
+    addToast(`${provider} Auth integration is prepared. Check Supabase configuration.`, 'info');
+  };
 
-          <form onSubmit={handleSubmit} className="login-page__form">
-            <Input
+  return (
+    <div className="login-page-premium animate-fade-in">
+      {/* 1. Left Illustration Side (55% width on desktop) */}
+      <section className="login-left-section hidden lg:block">
+        <HeroIllustration />
+      </section>
+
+      {/* 2. Right Form Side (45% width on desktop) */}
+      <section className="login-right-section">
+        <AuthCard>
+          {/* Top Left Logo & Title Branding */}
+          <NavbarLogo />
+
+          {/* Welcome Text */}
+          <h2 className="login-welcome-title">Welcome Back!</h2>
+          <p className="login-welcome-subtitle">
+            Sign in to continue your journey and reconnect lost items with their owners.
+          </p>
+
+          {/* Main Credentials Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+            <InputField
               label="Email Address"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. student@college.edu"
+              placeholder="Enter your email"
               error={errors.email}
               icon={<Mail size={18} />}
               required
+              disabled={loading}
             />
 
-            <Input
+            <InputField
               label="Password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Enter your password"
               error={errors.password}
               icon={<Lock size={18} />}
               required
+              disabled={loading}
             />
 
-            <div className="login-page__form-options">
-              <Link to="/signup" className="login-page__link">
-                Don't have an account? Sign up
+            {/* Remember Me and Forgot Password options */}
+            <div className="login-options-row">
+              <label className="login-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="login-checkbox-input"
+                  disabled={loading}
+                />
+                <span>Remember me</span>
+              </label>
+              <Link to="#" onClick={() => addToast('Password reset link can be integrated here.', 'info')} className="login-forgot-link">
+                Forgot Password?
               </Link>
             </div>
 
-            <Button
+            {/* Main CTA Submit Button */}
+            <PrimaryButton
               type="submit"
-              variant="primary"
-              className="login-page__submit"
               loading={loading}
               icon={<LogIn size={18} />}
+              className="mt-2"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
-            </Button>
+              Sign In
+            </PrimaryButton>
           </form>
 
-          <div className="login-page__divider">
-            <span>or continue with</span>
+          {/* Social Sign-in Divider */}
+          <div className="login-divider-container">
+            <div className="login-divider-line" />
+            <span className="login-divider-text">or continue with</span>
+            <div className="login-divider-line" />
           </div>
 
-          <Button
-            variant="secondary"
-            className="login-page__google"
-            onClick={() => {
-              addToast('Google Auth integration is prepared. Check Supabase setup.', 'info');
-            }}
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" className="google-icon">
-              <path
-                fill="#EA4335"
-                d="M12 5.04c1.67 0 3.17.58 4.35 1.71l3.25-3.25C17.65 1.58 15.02 1 12 1 7.37 1 3.41 3.65 1.5 7.51l3.79 2.94c.89-2.67 3.39-4.41 6.71-4.41z"
-              />
-              <path
-                fill="#4285F4"
-                d="M23.49 12.27c0-.81-.07-1.59-.2-2.34H12v4.43h6.44c-.28 1.48-1.12 2.73-2.38 3.58l3.69 2.87c2.16-1.99 3.74-4.92 3.74-8.54z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.29 14.51c-.23-.68-.36-1.42-.36-2.18s.13-1.5.36-2.18L1.5 7.21C.54 9.15 0 11.24 0 13.43s.54 4.28 1.5 6.22l3.79-2.94c-.23-.68-.36-1.42-.36-2.18z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.69-2.87c-1.02.68-2.33 1.09-3.95 1.09-3.32 0-5.82-2.16-6.71-4.83l-3.79 2.94C3.41 20.35 7.37 23 12 23z"
-              />
-            </svg>
-            Google Credentials
-          </Button>
-        </div>
-      </div>
+          {/* OAuth Buttons */}
+          <div className="login-oauth-grid">
+            <SocialLoginButton provider="google" onClick={() => handleOAuthLogin('Google')} disabled={loading}>
+              Continue with Google
+            </SocialLoginButton>
+            <SocialLoginButton provider="microsoft" onClick={() => handleOAuthLogin('Microsoft')} disabled={loading}>
+              Continue with Microsoft
+            </SocialLoginButton>
+          </div>
+
+          {/* Bottom Link for Sign up */}
+          <div className="login-card-footer">
+            <span>Don't have an account?</span>
+            <Link to="/signup" className="login-signup-link">
+              Create Account
+            </Link>
+          </div>
+
+          {/* Extra Policy/Support links */}
+          <FooterLinks />
+        </AuthCard>
+      </section>
     </div>
   );
 }
