@@ -3,11 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Search, Menu, X, LogOut, User, LayoutDashboard, FileText } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Navbar as LandingNavbar } from '../landing/Navbar';
 import './Navbar.css';
 
 export function Navbar() {
-  const { user, logout } = useAuth();
   const location = useLocation();
+
+  if (location.pathname === '/') {
+    return <LandingNavbar />;
+  }
+
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);

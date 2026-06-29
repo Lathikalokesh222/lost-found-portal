@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Heart, Globe, Mail } from 'lucide-react';
+import { Footer as LandingFooter } from '../landing/Footer';
 import './Footer.css';
 
 export function Footer() {
+  const location = useLocation();
+
+  if (location.pathname === '/') {
+    return <LandingFooter />;
+  }
   return (
     <footer className="footer">
       <div className="footer__inner container">
