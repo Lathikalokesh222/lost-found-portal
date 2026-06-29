@@ -1,14 +1,22 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { Search, Menu, X, LogOut, User, LayoutDashboard, FileText } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { Navbar as LandingNavbar } from '../landing/Navbar';
 import './Navbar.css';
 
 export function Navbar() {
-  const { user, signOut } = useAuth();
   const location = useLocation();
+
+  if (location.pathname === '/') {
+    return <LandingNavbar />;
+  }
+
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -21,7 +29,8 @@ export function Navbar() {
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await logout();
+      navigate('/login');
     } catch (error) {
       console.error('Sign out error:', error);
     }
@@ -66,13 +75,59 @@ export function Navbar() {
                 <LayoutDashboard size={16} />
                 Admin
               </Link>
-              <div className="navbar__user">
-                <span className="navbar__user-avatar">
-                  <User size={16} />
-                </span>
-                <button className="navbar__signout" onClick={handleSignOut} title="Sign out">
-                  <LogOut size={16} />
+              <div className="navbar__user-container">
+                <button
+                  className="navbar__user"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  aria-label="User menu"
+                  aria-expanded={dropdownOpen}
+                >
+                  <span className="navbar__user-avatar">
+                    <User size={16} />
+                  </span>
+                  <span className="navbar__username">
+                    {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                  </span>
                 </button>
+                {dropdownOpen && (
+                  <>
+                    <div className="navbar__dropdown-overlay" onClick={() => setDropdownOpen(false)} />
+                    <div className="navbar__dropdown glass">
+                      <div className="navbar__dropdown-header">
+                        <p className="navbar__dropdown-name">{user.user_metadata?.full_name || 'User'}</p>
+                        <p className="navbar__dropdown-email">{user.email}</p>
+                      </div>
+                      <div className="navbar__dropdown-divider" />
+                      <Link
+                        to="/my-reports"
+                        className="navbar__dropdown-item"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <FileText size={14} />
+                        My Reports
+                      </Link>
+                      <Link
+                        to="/admin"
+                        className="navbar__dropdown-item"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <LayoutDashboard size={14} />
+                        Admin Dashboard
+                      </Link>
+                      <div className="navbar__dropdown-divider" />
+                      <button
+                        className="navbar__dropdown-item navbar__dropdown-item--danger"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          handleSignOut();
+                        }}
+                      >
+                        <LogOut size={14} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </>
           ) : (

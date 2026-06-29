@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
-import { useAuth } from '../contexts/AuthContext';
+import { signIn } from '../lib/auth';
 import { useToast } from '../components/ui/Toast';
 import './LoginPage.css';
 
 export function LoginPage() {
-  const { signIn } = useAuth();
   const { addToast } = useToast();
   const navigate = useNavigate();
 
@@ -37,12 +36,14 @@ export function LoginPage() {
 
     setLoading(true);
     try {
-      await signIn(email, password);
+      const { error } = await signIn(email, password);
+      if (error) throw error;
       addToast('Welcome back to Findly!', 'success');
       navigate('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      addToast(err.message || 'Failed to sign in. Please check your credentials.', 'error');
+      const message = err instanceof Error ? err.message : 'Failed to sign in. Please check your credentials.';
+      addToast(message, 'error');
     } finally {
       setLoading(false);
     }
@@ -94,7 +95,7 @@ export function LoginPage() {
               loading={loading}
               icon={<LogIn size={18} />}
             >
-              Sign In
+              {loading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
 
